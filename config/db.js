@@ -8,6 +8,7 @@ const connectDB = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true, // DeprecationWarning: current Server Discovery and Monitoring engine is deprecated
       useCreateIndex: true,
+      useFindAndModify: false,
     }); //since mongoose.connect() returns a promise, we want to wait
     console.log('mongoDB connected');
   } catch (error) {
