@@ -2,15 +2,21 @@ import React, {Fragment} from 'react';
 import {Link} from "react-router-dom";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {logout} from "../../actions/authAction";
+import {logout} from "../../actions/authActions";
 
 const Navbar = ({auth:{isAuthenticated, loading},logout}) => {
     const authLinks =(
         <ul>
             <li>
-                <a onClick={logout} to='#!'>
-                    <i className="fas fa-sign-out-alt"></i>
-                    <span className="hide-sm">Logout</span>
+                <Link to='/dashboard'>
+                    <i className="fas fa-user"></i>
+                    <span className="hide-sm">Dashboard</span>
+                </Link>
+            </li>
+            <li>
+                <a onClick={logout} href={'#!'}>
+                    <i className="fas fa-sign-out-alt"/>
+                    <span className='hide-sm'>Logout</span>
                 </a>
             </li>
 

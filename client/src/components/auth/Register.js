@@ -3,7 +3,7 @@ import {Link,Redirect} from "react-router-dom";
 import {connect} from 'react-redux';
 import {setAlert} from "../../actions/alertActions";
 import PropTypes from 'prop-types';
-import {register} from "../../actions/authAction";
+import {register} from "../../actions/authActions";
 const Register =({setAlert,register,isAuthenticated}) =>{
     const [formData,setFormData] = useState({
         name: '',
@@ -91,4 +91,4 @@ Register.propTypes = {
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated
 });
-export default connect(null,{setAlert,register})(Register);
+export default connect(mapStateToProps,{setAlert,register})(Register);
