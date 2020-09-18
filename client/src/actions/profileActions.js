@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {setAlert} from "./alertActions";
-import * as actionTypes from './actionTypes';
+import * as actionTypes from "./actionTypes";
 
 
 // Get current users profile
@@ -48,4 +48,114 @@ export const createProfile = (formData, history, edit= false) => async dispatch 
             payload: { msg: error.response.statusText, status: error.response.status }
         });
     }
+}
+
+// Add experience
+export const addExperience = (formData, history) => async dispatch =>{
+    try{
+        const config ={
+            headers:{
+                'Content-Type' :'application/json'
+            }
+        }
+        const res =await axios.put('/api/profile/experience', formData,config);
+        dispatch({
+            type: actionTypes.UPDATE_PROFILE,
+            payload: res.data
+        });
+        dispatch(setAlert("Experience Added",'success'));
+
+    }catch(error){
+        const errors = error.response.data.errors;
+
+        if (errors) {
+            errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+        }
+        dispatch({
+            type: actionTypes.PROFILE_ERROR,
+            payload: { msg: error.response.statusText, status: error.response.status }
+        });
+    }
+}
+
+// Add Education
+export const addEducation = (formData, history) => async dispatch =>{
+    try{
+        const config ={
+            headers:{
+                'Content-Type' :'application/json'
+            }
+        }
+        const res =await axios.put('/api/profile/education', formData,config);
+        dispatch({
+            type: actionTypes.UPDATE_PROFILE,
+            payload: res.data
+        });
+        dispatch(setAlert("Education Added",'success'));
+
+    }catch(error){
+        const errors = error.response.data.errors;
+
+        if (errors) {
+            errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+        }
+        dispatch({
+            type: actionTypes.PROFILE_ERROR,
+            payload: { msg: error.response.statusText, status: error.response.status }
+        });
+    }
+}
+
+//Delete experience
+export const deleteExperience = (id) => async dispatch =>{
+    try{
+        const res = await axios.delete(`/api/profile/experience/${id}`);
+        dispatch({
+            type: actionTypes.UPDATE_PROFILE,
+            payload:res.data
+        });
+        dispatch(setAlert('Experience Removed','success'))
+    }catch(error){
+        dispatch({
+            type:actionTypes.PROFILE_ERROR,
+            payload:{msg: error.response.statusText, status:error.response.status}
+        })
+    }
+}
+
+//Delete education
+export const deleteEducation = (id) => async dispatch =>{
+    try{
+        const res = await axios.delete(`/api/profile/education/${id}`);
+        dispatch({
+            type: actionTypes.UPDATE_PROFILE,
+            payload:res.data
+        });
+        dispatch(setAlert('Education Removed','success'))
+    }catch(error){
+        dispatch({
+            type:actionTypes.PROFILE_ERROR,
+            payload:{msg: error.response.statusText, status:error.response.status}
+        })
+    }
+}
+
+//Delete account & profile
+export const deleteAccount = () => async dispatch =>{
+    if(window.confirm('ARE YOU SURE TO DELETE YOUR ACCOUNT? THIS CANNOT BE UNDONE!')){
+
+        try{
+            const res = await axios.delete(`/api/profile`);
+            dispatch({type: actionTypes.CLEAR_PROFILE,});
+            dispatch({type: actionTypes.ACCOUNT_DELETED,});
+
+            dispatch(setAlert('Account Deleted'))
+        }catch(error){
+            dispatch({
+                type:actionTypes.PROFILE_ERROR,
+                payload:{msg: error.response.statusText, status:error.response.status}
+            })
+        }
+    }
+
 }
