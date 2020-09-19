@@ -19,7 +19,12 @@ export default function (state = initialState, action) {
                 profile: payload,
                 loading: false
             };
-
+        case actionTypes.GET_PROFILES:
+            return {
+                ...state,
+                profiles: payload,
+                loading:false
+            }
         case actionTypes.PROFILE_ERROR:
             return {
                 ...state,
@@ -33,6 +38,12 @@ export default function (state = initialState, action) {
                 loading: false,
                 profile: null,
                 repos: []
+            };
+        case actionTypes.GET_REPOS:
+            return {
+                ...state,
+                repos:payload,
+                loading:false
             };
         default:
             return state;

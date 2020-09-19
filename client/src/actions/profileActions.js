@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {setAlert} from "./alertActions";
 import * as actionTypes from "./actionTypes";
+import {CLEAR_PROFILE} from "./actionTypes";
 
 
 // Get current users profile
@@ -20,6 +21,60 @@ export const getCurrentProfile = () => async dispatch => {
     }
 };
 
+
+// Get all Profiles
+export const getProfiles = () => async dispatch => {
+    dispatch({type: CLEAR_PROFILE});
+    try {
+        const res = await axios.get('/api/profile');
+
+        dispatch({
+            type: actionTypes.GET_PROFILES,
+            payload: res.data
+        });
+    } catch (error) {
+        dispatch({
+            type: actionTypes.PROFILE_ERROR,
+            payload: { msg: error.response.statusText, status: error.response.status }
+        });
+    }
+};
+
+
+// Get profile by id
+export const getProfilesById = (userId) => async dispatch => {
+    try {
+        const res = await axios.get(`/api/profile/user/${userId}`);
+
+        dispatch({
+            type: actionTypes.GET_PROFILE,
+            payload: res.data
+        });
+    } catch (error) {
+        dispatch({
+            type: actionTypes.PROFILE_ERROR,
+            payload: { msg: error.response.statusText, status: error.response.status }
+        });
+    }
+};
+
+
+// Get Github repos
+export const getGithubRepos = (username) => async dispatch => {
+    try {
+        const res = await axios.get(`/api/profile/github/${username}`);
+
+        dispatch({
+            type: actionTypes.GET_REPOS,
+            payload: res.data
+        });
+    } catch (error) {
+        dispatch({
+            type: actionTypes.PROFILE_ERROR,
+            payload: { msg: error.response.statusText, status: error.response.status }
+        });
+    }
+};
 //Create or Update profile
 export const createProfile = (formData, history, edit= false) => async dispatch =>{
     try{
@@ -145,7 +200,7 @@ export const deleteAccount = () => async dispatch =>{
     if(window.confirm('ARE YOU SURE TO DELETE YOUR ACCOUNT? THIS CANNOT BE UNDONE!')){
 
         try{
-            const res = await axios.delete(`/api/profile`);
+            await axios.delete(`/api/profile`);
             dispatch({type: actionTypes.CLEAR_PROFILE,});
             dispatch({type: actionTypes.ACCOUNT_DELETED,});
 
